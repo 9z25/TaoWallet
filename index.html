@@ -1,0 +1,848 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Client-Side Paper Wallet Generator for Tao">
+  <meta name="keywords" content="universal, paper, wallet, generator, cryptocurrencies, tao" />
+
+  <title>Freshmint Wallet - Paper wallet generator for Tao coin</title>
+
+  <script type="text/javascript" src="./src/array.map.js">
+//array.map.js
+ </script>
+  <script type="text/javascript" src="./src/cryptojs.js">
+//cryptojs.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.sha256.js">
+//cryptojs.sha256.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.pbkdf2.js">
+//cryptojs.pbkdf2.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.hmac.js">
+//cryptojs.hmac.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.aes.js">
+//cryptojs.aes.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.blockmodes.js">
+//cryptojs.blockmodes.js
+  </script>
+  <script type="text/javascript" src="./src/cryptojs.ripemd160.js">
+//cryptojs.ripemd160.js
+  </script>
+  <script type="text/javascript" src="./src/securerandom.js">
+//securerandom.js
+  </script>
+  <script type="text/javascript" src="./src/ellipticcurve.js">
+//ellipticcurve.js
+  </script>
+  <script type="text/javascript" src="./src/biginteger.js">
+//biginteger.js
+  </script>
+  <script type="text/javascript" src="./src/qrcode.js">
+//qrcode.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.js">
+//bitcoinjs-lib.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.base58.js">
+//bitcoinjs-lib.base58.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.address.js">
+//bitcoinjs-lib.address.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.ecdsa.js">
+//bitcoinjs-lib.ecdsa.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.eckey.js">
+//bitcoinjs-lib.eckey.js
+  </script>
+  <script type="text/javascript" src="./src/bitcoinjs-lib.util.js">
+//bitcoinjs-lib.util.js
+  </script>
+  <script type="text/javascript" src="./src/crypto-scrypt.js">
+//crypto-scrypt.js
+  </script>
+  <script type="text/javascript" src="./src/jsqrcode.js">
+//jsqrcode.js
+  </script>
+<style type="text/css" src="./src/main.css">
+  
+</style>
+
+</head>
+
+<body onclick="SecureRandom.seedTime();" onmousemove="processSeed(event);">
+        <div id="page-wrap">
+                
+        <div class="banner">
+                
+            <h1>
+                <img class="logo" src="./images/mint-leaves-two-color-512.png" width="60em" style="margin-left:-1.5em;" />
+                  <img id="siteTitle" src="images/banner.png" alt="FmPay Wallet" />
+                </h1>
+                <div id="coinLogo">
+                        <img id="coinLogoImg" src="logos/bitcoin.png" alt="Tao Wallet Generator" />
+                      </div>
+                      <br/>
+              </div>
+              
+  <div id="busyblock"></div>
+
+  <div class="row">
+        <span class="print">
+            <img onclick="window.print();" style="float:right;" name="print" value="Print" id="singleprint" src="http://www.vicksdesign.com/products/printer-fax-print-printing-22-B1.png" width="45em" />
+        </span>
+    </div>
+    <br/>
+    <br/>
+      <div id="addresses">
+            <hr/>
+            <div id="walletCommands" class="commands">
+                    <div id="singlecommands" class="row">
+                      <span class="center-button">
+                          <button id="newaddress" class="button button1 make-light" onclick="generateNewAddress();"> Generate New Address</button>
+                    </span>
+                      
+                    </div>
+                  </div>
+                  <hr/>
+                  
+                  <span id="keyarea" class="keyarea">
+                        
+                        <div id="container">
+                                <div id="column">
+                        <span class="public">
+                          <span class="pubaddress">
+                            <span class="label i18n" id="singlelabelbitcoinaddress">Public Address</span>
+                            <br/>
+                          </span>
+                          <br/>
+                          <span id="qrcode_public" class="qrcode_public"></span>
+                          <br/>
+                          <span class="pubaddress">
+                            <span class="output" id="btcaddress"></span>
+                          </span>
+                          <br/>
+                          <span id="singleshare" class="i18n">SHARE</span>
+                        </span>
+                    </div>
+                    <spanz id="spacer"></spanz>
+                    <div id="column">
+                        <span class="private">
+                          <span class="privwif">
+                            <span class="label i18n" id="singlelabelprivatekey">Private Key (Wallet Import Format)</span>
+                            <br/>
+                          </span>
+                          <br/>
+                          <span id="qrcode_private" class="qrcode_private"></span>
+                          <br/>
+                          <span class="privwif">
+                            <span class="output" id="btcprivwif"></span>
+                          </span>
+                          <br/>
+                          <span id="singlesecret" class="i18n">SECRET</span>
+                        </span>
+                    </div>
+                    </div>
+                      </span>
+                      <hr/>
+                      <div id="footer" class="footer">
+                            <div>
+                              <span onClick="loadCredits();" class="item tag make-warning"><img src="./images/tao1.png" width="17em;"/></span>
+                            </div>
+                          </div> 
+      </div>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jdriviere/sparkle-css@3.0.0/dist/css/sparkle.min.css">    
+<style>
+body {
+    background-color: #F4BA70;
+    overflow:hidden;
+}
+
+{ _noFocusLine: expression(this.hideFocus=true); } /* ie7 */
+::-moz-focus-inner {border:0;}                       /* firefox */
+:focus {outline:none;}                               /* ie8, chrome, etc */
+.button:hover {
+outline: none;
+background-color: #3e8e41}
+.label {
+    text-decoration: underline;
+}
+.item {
+    margin-top: 6em;
+    float: right;
+    background-color: #c7ae21;
+}
+.item:hover {
+    background-color: gold;
+}
+.item:active {
+    background-color: goldenrod;
+}
+
+.banner {
+    text-align: center;
+    color: #4A789C;
+    background-color: #cea46d;
+    -webkit-text-stroke: .01em black;
+    border: solid thin;
+}
+
+#seedpooldisplay {
+    display:none;
+}
+#container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 80%;
+}
+
+.progressBar{
+    display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+#column {
+  display: flex;
+  flex-direction: column;
+}
+#spacer {
+  flex: .7;
+}
+
+#initBanner {
+  padding-bottom: 8em;
+}
+.center-button {
+    text-align: center;
+    padding-left: 2em;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 90%;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  
+}
+
+
+
+.button1 {
+  background-color: #79cc86 !important;
+  color: black; 
+  border: .1em solid #79cc86 !important;
+  box-shadow: 0px 1px 0px grey;
+}
+
+
+
+.button1:active {
+  background-color: #69b374;
+  box-shadow: 0 .17em #69b374;
+  transform: translateY(.1em);
+}
+
+.center-skip{
+    padding-top: 1em;
+    padding-left: 1em;
+    
+}
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #cf5656;
+    border: solid thin #ac7767;
+	background-color:#d0451b;
+	border-radius:3px;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;   
+}
+
+.myButton:hover {
+    box-shadow: linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+    transition: 0.3s;
+	background-color:#bc3315;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+#singlesecret{
+    font-weight: bold;
+    color: red;
+    background-color: lightgrey;
+}
+
+#singleshare{
+    font-weight: bold;
+    color: green;
+    background-color: lightgrey;
+}
+
+.public {
+    margin-left: 3em;
+}
+
+.remaining {
+    text-align: center;
+}
+
+#myProgress {
+  width: 90%;
+  background-color: #ddd;
+  height: 30px;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #58bb67;
+}
+
+#generatelabelbitcoinaddress {
+    font-size: larger;
+}
+
+.generating {
+    border-block-style: double;
+    display: flex;
+  flex-direction: row;
+  width: 100%;
+  color: black;
+    font-family: monospace;
+    font-size:0;
+    height:calc(100% - 40px);
+
+    padding:5px;
+    font-size:14px;
+    
+}
+
+
+
+.tool-tip{
+    display: flex;
+  flex-direction: row;
+  width: 100%;  
+}
+.highlight {
+    background: rgba(150, 186, 214, 0.9);
+    
+    
+    padding: 3px 5px;
+    margin: -3px -5px;
+    line-height: 1.7;
+    border-radius: 3px;
+}
+#p1 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#p2 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#p3 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#count {
+    border: solid;
+    
+    font-weight: 800;
+    border-color: #d4cb7d;
+    background-color: #95ca78;
+    font-style: italic;
+    height: 22px;
+    padding-top: 3px;
+    min-width:2.3em;
+}
+
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+  background-color:rgba(255, 239, 100, 0.76);
+}
+
+.card:hover {
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+</style>
+
+  <div id="main">
+        
+
+    <div id="seedpoolarea" style="display:none"><textarea rows="16" cols="62" id="seedpool"></textarea></div>
+
+    <div id="wallets">
+      <div id="singlearea" class="walletarea">
+
+        <div id="initBanner">
+            <div class="generating highlight">
+            
+          <span id="generatelabelbitcoinaddress" class="i18n">Generating new seed</span> 
+          <span id="p1">.</span>
+          <span id="p2">.</span>
+          <span id="p3">.</span>
+        
+        </div>
+          <br />
+          
+
+          <div class="card">
+                <div class="container">
+                <span id="generatelabelmovemouse" class="i18n">MOVE your mouse around to add some extra randomness... </span>
+                </div>
+              </div>
+          <br />
+          
+          
+          <div class="i18n" id="generatekeyinput" onkeypress="ninja.seeder.seedKeyPress(event);"></div>
+          <div id="seedpooldisplay"></div>
+
+          <div id="rightArea" >
+            <div id="progress-bar" style="display:none;" class="fullyRounded">
+              <div id="progress-bar-percentage" class="fullyRounded 1percentwidth"></div>
+            </div>
+
+            <div id="seedSkipper">
+                <div class="progressBar">
+                    <progress id="prog" class="progress make-success"></progress>
+                    <span id="count" class="tag make-$type make-outlined"></span>          
+                </div>
+            
+                  
+                        
+                      </div>
+                    </div>
+                  
+                  <div class="remaining">
+                      <br/>
+                      <br/>
+                  <div class="card">
+                      
+                        <div class="container">
+                                <p id="skipMessage" class="i18n">You may skip this step if you do not plan to use the random key generator.</p>
+                                            
+                                       
+                        </div>
+                        
+                      </div>
+                      <a href="#" class="myButton" onClick="ninja.seeder.seedCount = ninja.seeder.seedLimit; ninja.seeder.seed();">Skip &raquo;</a>
+                    </div> 
+                  
+                           
+            </div>
+          
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+  <div id="footer" class="footer">
+
+
+    </div>
+
+
+  <script type="text/javascript" src="./src/janin.currency.js" >
+//janin.currency.js
+  </script>
+  <script type="text/javascript" src="./src/ninja.key.js">
+//ninja.key.js
+  </script>
+  <script type="text/javascript" src="./src/ninja.misc.js">
+//ninja.misc.js
+  </script>
+  <script type="text/javascript" src="./src/ninja.translator.js">
+//ninja.translator.js
+  </script>
+  <script type="text/javascript" src="./src/ninja.singlewallet.js">
+//ninja.singlewallet.js
+  </script>
+
+  <script type="text/javascript" src="./src/ninja.onload.js">
+//ninja.onload.js
+  </script>
+    <script>
+
+
+window.onload= function() {
+    
+var p1 = document.getElementById("p1");
+var p2 = document.getElementById("p2");
+var p3 = document.getElementById("p3");
+var modal = document.getElementById("modal");
+var bodyTag = document.getElementsByTagName("Body");
+
+
+p2.style.display = "none";
+p3.style.display = "none";
+
+var loading = setInterval("doSomething()", 1000);
+
+
+loadCredits = () => {
+
+    var display = modal.style.display.toString();
+    if(display !== "block") {
+        modal.style.display = "block";
+        for(var i = 0; i < bodyTag.length; i++) bodyTag[i].classList.toggle("dialogIsOpen");
+        return;
+    }
+    return;
+}
+
+closeModal = () => {
+    
+    var display = modal.style.display.toString();
+    if(display === "block") {
+      modal.style.display = "none";
+      for(var i = 0; i < bodyTag.length; i++) bodyTag[i].classList.toggle("dialogIsOpen");
+      return;
+    }
+    return;
+}
+
+doSomething = () => {
+  if (ninja.seeder.seedCount > ninja.seeder.seedLimit) {
+  clearInterval(l);
+  }
+  if (p3.style.display == "block"){
+    p2.style.display = "none";
+    p3.style.display = "none";
+    p1.style.display = "block";
+    return;
+  }
+  if (p2.style.display == "none"){
+    p2.style.display = "block";
+    return;
+  }
+  if (p3.style.display == "none"){
+    p3.style.display = "block";
+    return;
+  }
+  
+}
+
+
+
+
+viewSingleWallet = () => {
+    document.getElementById("main").style.display = "none";
+    document.getElementById("addresses").style.display = "block";
+}
+
+viewNewSeed = () => {
+    ninja.seeder.seedCount = 0;
+    switchCursor();
+    document.getElementById("main").style.display = "block";
+    document.getElementById("addresses").style.display = "none";
+    
+    
+}
+
+processSeed = (event) => {
+    ninja.seeder.seed(event);
+    var percentageComplete =  ninja.seeder.seedCount / ninja.seeder.seedLimit;
+    /*
+    var elem = document.getElementById("myBar");
+    elem.style.width = percentageComplete.toString().substring(2, 4) + "%";
+*/  
+    document.getElementById("count").textContent = percentageComplete.toString().substring(2, 4) + "%";
+    var elem = document.getElementById("prog");
+    elem.value = ninja.seeder.seedCount;
+    elem.max = ninja.seeder.seedLimit;
+    if (ninja.seeder.seedCount > ninja.seeder.seedLimit) {
+        viewSingleWallet();
+    }
+}
+
+
+generateNewSeed = () => {
+    if (ninja.seeder.seedCount <= ninja.seeder.seedLimit) {
+        viewNewSeed()
+        return;
+    }
+}
+
+generateNewAddress = () => {
+    if (ninja.seeder.seedCount <= ninja.seeder.seedLimit) {
+        viewNewSeed()
+        return;
+    }
+    ninja.wallets.singlewallet.generateNewAddressAndKey();
+}
+var main = document.getElementById("main");
+main.style.display = "none";
+var addresses = document.getElementById("addresses");
+addresses.style.display = "block";
+if (ninja.seeder.seedCount <= ninja.seeder.seedLimit) {
+    viewNewSeed()
+    return;
+}
+}
+
+    
+
+            // <![CDATA[
+            var colour="#000000";
+            var sparkles=20;
+            
+            /****************************
+            *  Tinkerbell Magic Sparkle *
+            * (c) 2005 mf2fm web-design *
+            *  http://www.mf2fm.com/rv  *
+            * DON'T EDIT BELOW THIS BOX *
+            ****************************/
+            var x=ox=40;
+            var y=oy=30;
+            var swide=80;
+            var shigh=60;
+            var sleft=sdown=0;
+            var tiny=new Array();
+            var star=new Array();
+            var starv=new Array();
+            var starx=new Array();
+            var stary=new Array();
+            var tinyx=new Array();
+            var tinyy=new Array();
+            var tinyv=new Array();
+            
+            switchCursor =function() { if (document.getElementById) {
+              var i, rats, rlef, rdow;
+              for (var i=0; i<sparkles; i++) {
+                var rats=createDiv(3, 3);
+                rats.style.visibility="hidden";
+                main.appendChild(tiny[i]=rats);
+                starv[i]=0;
+                tinyv[i]=0;
+                var rats=createDiv(5, 5);
+                rats.style.backgroundColor="transparent";
+                rats.style.visibility="hidden";
+                var rlef=createDiv(1, 5);
+                var rdow=createDiv(5, 1);
+                rats.appendChild(rlef);
+                rats.appendChild(rdow);
+                rlef.style.top="2px";
+                rlef.style.left="0px";
+                rdow.style.top="0px";
+                rdow.style.left="2px";
+                document.body.appendChild(star[i]=rats);
+              }
+              set_width();
+              sparkle();
+            }}
+            
+            function sparkle() {
+              var c;
+              if (x!=ox || y!=oy) {
+                ox=x;
+                oy=y;
+                for (c=0; c<sparkles; c++) if (!starv[c]) {
+                  star[c].style.left=(starx[c]=x)+"px";
+                  star[c].style.top=(stary[c]=y)+"px";
+                  star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+                  star[c].style.visibility="visible";
+                  starv[c]=50;
+                  break;
+                }
+              }
+              for (c=0; c<sparkles; c++) {
+                if (starv[c]) update_star(c);
+                if (tinyv[c]) update_tiny(c);
+              }
+              setTimeout("sparkle()", 100);
+            }
+            
+            function update_star(i) {
+              if (--starv[i]==15) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+              if (starv[i]) {
+                stary[i]+=1+Math.random()*1;
+                if (stary[i]<shigh+sdown) {
+                  star[i].style.top=stary[i]+"px";
+                  starx[i]+=(i%5-2)/5;
+                  star[i].style.left=starx[i]+"px";
+                }
+                else {
+                  star[i].style.visibility="hidden";
+                  starv[i]=0;
+                  return;
+                }
+              }
+              else {
+                tinyv[i]=25;
+                tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+                tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+                tiny[i].style.width="2px";
+                tiny[i].style.height="2px";
+                star[i].style.visibility="hidden";
+                tiny[i].style.visibility="visible"
+              }
+            }
+            
+            function update_tiny(i) {
+              if (--tinyv[i]==15) {
+                tiny[i].style.width="1px";
+                tiny[i].style.height="1px";
+              }
+              if (tinyv[i]) {
+                tinyy[i]+=1+Math.random()*1;
+                if (tinyy[i]<shigh+sdown) {
+                  tiny[i].style.top=tinyy[i]+"px";
+                  tinyx[i]+=(i%5-2)/5;
+                  tiny[i].style.left=tinyx[i]+"px";
+                }
+                else {
+                  tiny[i].style.visibility="hidden";
+                  tinyv[i]=0;
+                  return;
+                }
+              }
+              else tiny[i].style.visibility="hidden";
+            }
+            
+            main.onmousemove=mouse;
+            function mouse(e) {
+              set_scroll();
+              y=(e)?e.pageY:event.y+sdown;
+              x=(e)?e.pageX:event.x+sleft;
+            }
+            
+            function set_scroll() {
+              if (typeof(self.pageYOffset)=="number") {
+                sdown=self.pageYOffset;
+                sleft=self.pageXOffset;
+              }
+              else if (document.body.scrollTop || document.body.scrollLeft) {
+                sdown=document.body.scrollTop;
+                sleft=document.body.scrollLeft;
+              }
+              else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+                sleft=document.documentElement.scrollLeft;
+                sdown=document.documentElement.scrollTop;
+              }
+              else {
+                sdown=0;
+                sleft=0;
+              }
+            }
+            
+            window.onresize=set_width;
+            function set_width() {
+              if (typeof(self.innerWidth)=="number") {
+                swide=self.innerWidth;
+                shigh=self.innerHeight;
+              }
+              else if (document.documentElement && document.documentElement.clientWidth) {
+                swide=document.documentElement.clientWidth;
+                shigh=document.documentElement.clientHeight;
+              }
+              else if (document.body.clientWidth) {
+                swide=document.body.clientWidth;
+                shigh=document.body.clientHeight;
+              }
+            }
+            
+            function createDiv(height, width) {
+              var div=document.createElement("div");
+              div.style.position="absolute";
+              div.style.height=height+"px";
+              div.style.width=width+"px";
+              div.style.overflow="hidden";
+              div.style.backgroundColor=colour;
+              return (div);
+            }
+            // ]]>
+            </script>
+        <style>
+ .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border: solid;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  background-color: #ffbf6b;
+  text-align: center;
+}
+#modal {
+    display:none;
+    
+}
+.copy .credits{
+    padding-bottom: 10em;
+    padding-top: 3em;
+   
+}
+
+    #closeModal{
+        position: absolute;
+        bottom: 0;
+        background-color:rgba(66, 139, 196, 0.9);
+    }
+
+    #closeModal:active {
+        color: grey;
+        background-color:rgba(53, 88, 114, 0.9);
+    }
+    .dialogIsOpen #page-wrap {
+
+/* Blur and de-color */
+-webkit-filter: blur(5px) grayscale(50%);
+
+/* Recede */
+-webkit-transform: scale(0.9);
+
+}
+        </style>    
+
+<div class="modal" id="modal">
+        
+                      <div class="modal-content">
+                        <div class="header">
+                          <h2>Credits</h2>
+                          <hr/>
+                        </div>
+                        <div class="copy">
+                            <div class="credits">
+                          <p>Designed by - Syndrome</p>
+                          <p>Programmed by - Syndrome</p>
+                        </div>
+                          <a onclick="closeModal();" class="button make-info make-block">Close</a> 
+                        </div>
+                      </div>
+                      <div class="overlay"></div>
+                 
+</div>
+<!-- all page content -->
+</div> 
+</body>
+
+
+</html>
