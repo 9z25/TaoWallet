@@ -1,0 +1,233 @@
+body {
+    background-color: #F4BA70;
+    overflow:hidden;
+}
+
+{ _noFocusLine: expression(this.hideFocus=true); } /* ie7 */
+::-moz-focus-inner {border:0;}                       /* firefox */
+:focus {outline:none;}                               /* ie8, chrome, etc */
+.button:hover {
+outline: none;
+background-color: #3e8e41}
+.label {
+    text-decoration: underline;
+}
+.item {
+    margin-top: 6em;
+    float: right;
+    background-color: #c7ae21;
+}
+.item:hover {
+    background-color: gold;
+}
+.item:active {
+    background-color: goldenrod;
+}
+
+.banner {
+    text-align: center;
+    color: #4A789C;
+    background-color: #cea46d;
+    -webkit-text-stroke: .01em black;
+    border: solid thin;
+}
+
+#seedpooldisplay {
+    display:none;
+}
+#container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 80%;
+}
+
+.progressBar{
+    display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+#column {
+  display: flex;
+  flex-direction: column;
+}
+#spacer {
+  flex: .7;
+}
+
+#initBanner {
+  padding-bottom: 8em;
+}
+.center-button {
+    text-align: center;
+    padding-left: 2em;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 90%;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  
+}
+
+
+
+.button1 {
+  background-color: #79cc86 !important;
+  color: black; 
+  border: .1em solid #79cc86 !important;
+  box-shadow: 0px 1px 0px grey;
+}
+
+
+
+.button1:active {
+  background-color: #69b374;
+  box-shadow: 0 .17em #69b374;
+  transform: translateY(.1em);
+}
+
+.center-skip{
+    padding-top: 1em;
+    padding-left: 1em;
+    
+}
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #cf5656;
+    border: solid thin #ac7767;
+	background-color:#d0451b;
+	border-radius:3px;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;   
+}
+
+.myButton:hover {
+    box-shadow: linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+    transition: 0.3s;
+	background-color:#bc3315;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+#singlesecret{
+    font-weight: bold;
+    color: red;
+    background-color: lightgrey;
+}
+
+#singleshare{
+    font-weight: bold;
+    color: green;
+    background-color: lightgrey;
+}
+
+.public {
+    margin-left: 3em;
+}
+
+.remaining {
+    text-align: center;
+}
+
+#myProgress {
+  width: 90%;
+  background-color: #ddd;
+  height: 30px;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #58bb67;
+}
+
+#generatelabelbitcoinaddress {
+    font-size: larger;
+}
+
+.generating {
+    border-block-style: double;
+    display: flex;
+  flex-direction: row;
+  width: 100%;
+  color: black;
+    font-family: monospace;
+    font-size:0;
+    height:calc(100% - 40px);
+
+    padding:5px;
+    font-size:14px;
+    
+}
+
+
+
+.tool-tip{
+    display: flex;
+  flex-direction: row;
+  width: 100%;  
+}
+.highlight {
+    background: rgba(150, 186, 214, 0.9);
+    
+    
+    padding: 3px 5px;
+    margin: -3px -5px;
+    line-height: 1.7;
+    border-radius: 3px;
+}
+#p1 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#p2 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#p3 {
+    margin-top: .2em;
+    margin-left: .2em;
+}
+#count {
+    border: solid;
+    
+    font-weight: 800;
+    border-color: #d4cb7d;
+    background-color: #95ca78;
+    font-style: italic;
+    height: 22px;
+    padding-top: 3px;
+    min-width:2.3em;
+}
+
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+  background-color:rgba(255, 239, 100, 0.76);
+}
+
+.card:hover {
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
